@@ -6,5 +6,9 @@
     "description": "A simple state machine implementation for Unity using native C# features.",
     "keywords": ["Script", "Test"],
     "category": "Controllers",
+    "author": {
+        "name": "Yuffter",
+        "url": "https://github.com/Yuffter"
+    },
     "dependencies": { }
 }
