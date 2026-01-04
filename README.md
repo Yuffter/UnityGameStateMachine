@@ -22,18 +22,13 @@ Unity向けのシンプルで軽量なステートマシンライブラリです
 https://github.com/Yuffter/UnityGameStateMachine.git?path=/Assets/GameStateMachine
 ```
 
-### 手動インストール
-
-1. このリポジトリをクローンまたはダウンロード
-2. `Assets/GameStateMachine`フォルダをプロジェクトにコピー
-
 ## 使い方
 
 ### 基本的な使い方
 
 #### 1. ステートクラスを作成
 
-`IState`インターフェースを実装するか、`StateBase`クラスを継承してステートを作成します。
+`StateBase`クラスを継承してステートを作成します。
 
 ```csharp
 using Yuffter.GameStateMachine;
@@ -91,7 +86,7 @@ public class GamePlayState : StateBase
 using UnityEngine;
 using Yuffter.GameStateMachine;
 
-public class GameManager : MonoBehaviour
+public class GameInitializer : MonoBehaviour
 {
     void Start()
     {
