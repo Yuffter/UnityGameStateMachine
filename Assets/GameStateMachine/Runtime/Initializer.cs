@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Yuffter.GameStateMachine
 {
+    /// <summary>
+    /// ステートマシンの初期化を行うクラス
+    /// </summary>
     public static class Initializer
     {
         /// <summary>

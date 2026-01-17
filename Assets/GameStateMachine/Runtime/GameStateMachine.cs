@@ -1,9 +1,14 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Yuffter.GameStateMachine
 {
+    /// <summary>
+    /// ゲーム全体のステート管理用ステートマシン
+    /// </summary>
     public class GameStateMachine : MonoBehaviour
     {
         #region シングルトン初期設定
@@ -42,7 +47,7 @@ namespace Yuffter.GameStateMachine
         /// 現在のステート
         /// </summary>
         public IState CurrentState => _currentState;
-        private Dictionary<Type, IState> _stateCache = new Dictionary<Type, IState>();
+        private Dictionary<Type, IState> _stateCache = new Dictionary<Type, IState>(); // ステートのインスタンスキャッシュ
 
         private void Update()
         {
@@ -81,6 +86,37 @@ namespace Yuffter.GameStateMachine
             }
 
             _currentState?.Enter();
+        }
+
+        /// <summary>
+        /// シーンをロードしてからステートを変更します
+        /// </summary>
+        /// <typeparam name="T">遷移先のステートの型</typeparam>
+        /// <param name="sceneName">ロードするシーン名</param>
+        public void ChangeStateWithSceneLoad<T>(string sceneName) where T : IState 
+        {
+            StartCoroutine(LoadSceneAndChangeState<T>(sceneName));
+        }
+
+        /// <summary>
+        /// シーンをロードしてからステートを変更します
+        /// </summary>
+        /// <typeparam name="T">遷移先のステートの型</typeparam>
+        /// <param name="sceneName">ロードするシーン名</param>
+        public void ChangeStateWithSceneLoad<T>(SceneName sceneName) where T : IState 
+        {
+            StartCoroutine(LoadSceneAndChangeState<T>(sceneName.ToString()));
+        }
+
+        private IEnumerator LoadSceneAndChangeState<T>(string sceneName) where T : IState 
+        {
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+            while (!asyncLoad.isDone) 
+            {
+                yield return null;
+            }
+
+            ChangeState<T>();
         }
     }
 }
