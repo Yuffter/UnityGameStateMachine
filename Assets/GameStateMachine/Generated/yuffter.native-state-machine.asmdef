@@ -1,10 +1,7 @@
 {
-    "name": "GameStateMachine.Runtime",
+    "name": "GameStateMachine.Generated",
     "rootNamespace": "",
-    "references": [
-        "GUID:6bb6ec5fe2a71014f914821c9e4e4d54",
-        "GUID:f150bb7590e7fd8478a98173447ce640"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

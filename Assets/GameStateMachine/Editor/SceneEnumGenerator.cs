@@ -11,7 +11,7 @@ namespace Yuffter.GameStateMachine
     /// </summary>
     public static class SceneEnumGenerator
     {
-        private const string OUTPUT_PATH = "Packages/com.yuffter.gamestatemachine/Runtime/SceneEnum.cs";
+        private const string OUTPUT_PATH = "Assets/GameStateMachine/Generated/SceneEnum.cs";
 
         [MenuItem("Tools/Yuffter/Game State Machine/Generate SceneEnum")]
         public static void Generate()
