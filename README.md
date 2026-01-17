@@ -9,18 +9,16 @@ Unity向けのシンプルで軽量なステートマシンライブラリです
 - 💾 **効率的**: ステートをキャッシュし、無駄なインスタンス生成を防ぐ
 - 🎮 **Unity最適化**: Unity 6000.0以降に対応
 - 🔌 **即使用可能**: 自動初期化により設定不要で使い始められる
+- 🎬 **シーン連携**: シーンロードとステート遷移を同時に実行可能
+- 🔧 **開発支援**: ビルド設定からシーン名のEnum自動生成ツール付き
 
 ## インストール
 
-### Unity Package Manager経由
+### UnityPackage からインストール
 
-1. Package Managerを開く（Window > Package Manager）
-2. 「+」ボタンをクリック
-3. 「Add package from git URL...」を選択
-4. 以下のURLを入力:
-```
-https://github.com/Yuffter/UnityGameStateMachine.git?path=/Assets/GameStateMachine
-```
+1. [Releases](https://github.com/Yuffter/UnityGameStateMachine/releases)ページから最新の`GameStateMachine-x.x.x.unitypackage`をダウンロード
+2. Unityエディタでダウンロードした`.unitypackage`ファイルをダブルクリック、またはAssets > Import Package > Custom Packageから選択
+3. インポートダイアログで必要なファイルを確認し、「Import」をクリック
 
 ## 使い方
 
@@ -108,6 +106,23 @@ GameStateMachine.Instance.ChangeState<GamePlayState>();
 GameStateMachine.Instance.ChangeState<TitleState>();
 ```
 
+### シーンをロードしながらステート遷移
+
+シーンの読み込みとステート遷移を同時に行います。
+
+```csharp
+// GameSceneをロードしてGamePlayステートに遷移
+GameStateMachine.Instance.ChangeStateWithSceneLoad<GamePlayState>(SceneName.GameScene);
+```
+
+### SceneEnum を生成
+
+ビルド設定に登録されたシーンから、タイプセーフなEnum定義を自動生成できます。
+
+1. メニューから `Tools > Yuffter > Game State Machine > Generate SceneEnum` を選択
+2. `Assets/GameStateMachine/Generated/SceneEnum.cs` にEnumファイルが生成されます
+3. `ChangeStateWithSceneLoad` メソッドで使用できます
+
 ### 現在のステートを取得
 
 ```csharp
@@ -136,6 +151,10 @@ Debug.Log($"現在のステート: {currentState.GetType().Name}");
   - 指定したステートに遷移します
   - 現在のステートと同じステートを指定した場合は何もしません
   - 前のステートの`Exit()`を呼び、新しいステートの`Enter()`を呼びます
+
+- `void ChangeStateWithSceneLoad<T>(SceneName sceneName) where T : IState`
+  - シーンを非同期でロードし、ロード完了後に指定したステートに遷移します
+  - シーン遷移が必要なステート変更に使用します
 
 ### IState
 
@@ -230,6 +249,10 @@ public class GameOverState : StateBase
 ### 自動初期化
 
 `RuntimeInitializeOnLoadMethod`属性を使用して、シーン読み込み前に自動的にGameStateMachineを初期化します。手動でGameObjectに追加する必要はありません。
+
+### シーン間での永続化
+
+`DontDestroyOnLoad`により、シーン遷移してもGameStateMachineインスタンスは破棄されません。これによりシーンをまたいだステート管理が可能です。
 
 ### ステートキャッシュ
 
